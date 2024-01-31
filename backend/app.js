@@ -5,37 +5,29 @@ const mongoose = require("mongoose");
 dotenv.config();
 const allRoutes = require("./Routes/allRoutes");
 const cookieParser = require("cookie-parser");
-const cors = require('cors');
+const cors = require("cors");
 
-
-// Database here 
+// Database here
 mongoose
   .connect(`${process.env.MONGO_URL}`)
-  .then(() => {
-    console.log("Database Connected");
-  })
-  .catch((error) => {
-    console.log("Error while connecting", error);
-  });
+  .then(() => console.log("Database Connected"))
+  .catch((error) => console.log("Error while connecting", error));
 
 //middlewares
 app.use(express.json());
-app.use(express.urlencoded({extended:false}));
-app.use(cookieParser);
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 app.use(cors());
 
-
 //route
-app.use("/notesApp",allRoutes);
+app.use("/api/notesApp", allRoutes);
 
-
-// test route  
+// test route
 app.get("/", (req, res) => {
   res.json({
-    message: "Backend is ready to rock",
-  });
+    message:"backend rocks",
+  })
 });
-
 
 //listening port
 app.listen(process.env.PORT, () => {

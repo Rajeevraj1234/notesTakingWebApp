@@ -3,8 +3,8 @@ const router = express.Router();
 const userRoute = require('./userRoute');
 const notesRoute = require('./notesRoute');
 
-router.get("/user",userRoute);
-router.get("/notes",notesRoute);
+router.use("/user",userRoute);
+router.use("/notes",notesRoute);
 
 
 
