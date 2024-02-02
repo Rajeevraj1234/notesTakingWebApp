@@ -96,4 +96,20 @@ router.get("/allNotes", async (req, res) => {
   }
 });
 
+// Get Single Note
+router.get("/singleNote/:id", async (req, res) => {
+  const {id} = req.params;
+  try {
+    const singleNote = await Notes.find({ _id: id });
+    res.status(200).json({
+      singleNote,
+    });
+  } catch (error) {
+    
+    res.status(500).json({
+      message: "Internal Server Error",
+    });
+  }
+});
+
 module.exports = router;
