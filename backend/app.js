@@ -7,6 +7,16 @@ const allRoutes = require("./Routes/allRoutes");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
+//socket code
+const { createServer } = require('node:http');
+const { join } = require('node:path');
+const { Server } = require('socket.io');
+const server = createServer(app);
+const io = new Server(server);
+//socket code
+
+
+
 // Database here
 mongoose
   .connect(`${process.env.MONGO_URL}`)
@@ -19,6 +29,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(cors({
   origin: 'http://localhost:5173', 
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
 }));
 
@@ -32,7 +43,23 @@ app.get("/", (req, res) => {
   })
 });
 
+//socket io 
+io.on('connection', (socket) => {
+  console.log('a user connected',socket.id);
+
+  socket.on('client-message',(data)=>{
+    socket.broadcast.emit("server-message",data);
+  })
+
+
+ 
+});
+
+
+
+
+
 //listening port
-app.listen(process.env.PORT, () => {
+server.listen(process.env.PORT, () => {
   console.log("connect to Server");
 });
